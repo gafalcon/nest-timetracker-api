@@ -12,7 +12,7 @@ export class TimeTrackService {
         return this.repository.find()
     }
 
-    async findProject(project: string){
+    async findProject(projectName: string){
 
     }
 
@@ -21,6 +21,8 @@ export class TimeTrackService {
     }
 
     async createTimeSlot(projectName: string) {
+        const timeslot = this.repository.create({project: projectName})
+        return this.repository.save(timeslot)
     }
 
     async stopTimeSlot(startedTimeSlot: TimeSlot) {

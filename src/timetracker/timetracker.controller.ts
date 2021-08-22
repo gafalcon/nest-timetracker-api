@@ -18,7 +18,7 @@ export class TimeTrackerController {
 
     @Post(':project/start')
     async startTime(@Param('project') project: string){
-        return {project, status: 'start'}
+        return this.timetrackService.createTimeSlot(project)
     }
 
     @Post(':project/stop')
