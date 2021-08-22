@@ -18,12 +18,13 @@ export class TimeTrackerController {
 
     @Post(':project/start')
     async startTime(@Param('project') project: string){
-        return this.timetrackService.createTimeSlot(project)
+        return this.timetrackService.startTimeSlot(project)
     }
 
     @Post(':project/stop')
     async stopTime(@Param('project') project: string){
-        return {project, status: 'stop'}
+        const timeslot = await this.timetrackService.findRunningTimeSlot(project)
+        return this.timetrackService.stopTimeSlot(timeslot)
     }
 
 }

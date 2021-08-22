@@ -20,12 +20,14 @@ export class TimeTrackService {
         return this.repository.findOne({project: projectName, duration: null})
     }
 
-    async createTimeSlot(projectName: string) {
+    async startTimeSlot(projectName: string) {
         const timeslot = this.repository.create({project: projectName})
         return this.repository.save(timeslot)
     }
 
     async stopTimeSlot(startedTimeSlot: TimeSlot) {
+        startedTimeSlot.duration = (Date.now() - startedTimeSlot.time_start.getTime())/1000
+        return this.repository.save(startedTimeSlot)
     }
 
 }
