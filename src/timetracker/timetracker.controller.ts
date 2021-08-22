@@ -1,4 +1,5 @@
-import { ConflictException, Controller, Get, Param, Post } from '@nestjs/common';
+import { ConflictException, Controller, Get, HttpException, NotFoundException, Param, Post } from '@nestjs/common';
+import { ProjectDetailDto } from './dto/project_detail.dto';
 import { ProjectTotalDto } from './dto/project_total.dto';
 import { TimeSlot } from './timeslot.entity';
 import { TimeTrackService } from './timetrack.service';
@@ -14,8 +15,11 @@ export class TimeTrackerController {
     }
 
     @Get(':project')
-    async findProject(@Param('project') project: string){
-        return {project}
+    async findProject(@Param('project') project: string): Promise<ProjectDetailDto>{
+        const projectDetail: ProjectDetailDto = await this.timetrackService.findProject(project)
+        if (!projectDetail.timeslots.length)
+            throw new NotFoundException('Project Not found')
+        return projectDetail
     }
 
     @Post(':project/start')
