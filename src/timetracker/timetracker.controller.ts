@@ -1,12 +1,14 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
+import { TimeTrackService } from './timetrack.service';
 
 @Controller('projects')
 export class TimeTrackerController {
 
+    constructor(private timetrackService: TimeTrackService) {}
 
     @Get('')
     async findAll() {
-        return []
+        return this.timetrackService.findAll()
     }
 
     @Get(':project')
