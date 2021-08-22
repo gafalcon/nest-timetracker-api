@@ -1,4 +1,6 @@
 import { ConflictException, Controller, Get, Param, Post } from '@nestjs/common';
+import { ProjectTotalDto } from './dto/project_total.dto';
+import { TimeSlot } from './timeslot.entity';
 import { TimeTrackService } from './timetrack.service';
 
 @Controller('projects')
@@ -7,7 +9,7 @@ export class TimeTrackerController {
     constructor(private timetrackService: TimeTrackService) {}
 
     @Get('')
-    async findAll() {
+    async findAll(): Promise<ProjectTotalDto[]> {
         return this.timetrackService.findAll()
     }
 
@@ -17,7 +19,7 @@ export class TimeTrackerController {
     }
 
     @Post(':project/start')
-    async startTime(@Param('project') project: string){
+    async startTime(@Param('project') project: string): Promise<TimeSlot>{
         const timeslot = await this.timetrackService.findRunningTimeSlot(project)
         if (timeslot)
             throw new ConflictException('Project already running')
@@ -25,7 +27,7 @@ export class TimeTrackerController {
     }
 
     @Post(':project/stop')
-    async stopTime(@Param('project') project: string){
+    async stopTime(@Param('project') project: string): Promise<TimeSlot>{
         const timeslot = await this.timetrackService.findRunningTimeSlot(project)
         if (!timeslot)
             throw new ConflictException('Project not found or not running')
