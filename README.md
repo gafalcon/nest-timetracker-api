@@ -7,7 +7,11 @@
   
  Written using the [Nest](https://github.com/nestjs/nest) framework in Typescript. Uses a Sqlite Db for persistence.
 
+## Requirements
+- nodejs v15.10.0 or higher
+
 ## Installation
+In the project directory execute the following:
 
 ```bash
 $ yarn install
