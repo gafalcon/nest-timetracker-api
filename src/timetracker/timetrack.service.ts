@@ -13,7 +13,7 @@ export class TimeTrackService {
     findAll(): Promise<ProjectTotalDto[]> {
         return this.repository.createQueryBuilder()
             .select("project")
-            .addSelect("SUM(duration)/60", "total_time") //convert to min
+            .addSelect("SUM(duration)", "total_time")
             .where("duration IS NOT NULL") //Ignore running timeslots
             .groupBy("project").getRawMany()
     }
@@ -22,7 +22,7 @@ export class TimeTrackService {
         //Find all timeslots of project
         const timeslots = await this.repository.createQueryBuilder()
             .select("time_start")
-            .addSelect("duration/60", "duration") //convert to min
+            .addSelect("duration") //convert to min
             .where("duration IS NOT NULL") //Ignore running timeslots
             .andWhere("project = :pId", { pId: project })
             .getRawMany()
@@ -43,7 +43,8 @@ export class TimeTrackService {
     }
 
     async stopTimeSlot(startedTimeSlot: TimeSlot) {
-        startedTimeSlot.duration = Math.floor((Date.now() - startedTimeSlot.time_start.getTime())/1000)
+        //Set duration in minutes
+        startedTimeSlot.duration = Math.floor((Date.now() - startedTimeSlot.time_start.getTime())/60000)
         return this.repository.save(startedTimeSlot)
     }
 

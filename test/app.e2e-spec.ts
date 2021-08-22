@@ -28,20 +28,20 @@ describe('AppController (e2e)', () => {
         it('list all projects with correct accumulated total time', async () => {
             //Create sample timeslots
             await repository.save([
-                { project: 'project0', duration: 60 },
-                { project: 'project0', duration: 120 },
-                { project: 'project1', duration: 180 },
+                { project: 'project0', duration: 6 },
+                { project: 'project0', duration: 12 },
+                { project: 'project1', duration: 18 },
                 { project: 'project1', duration: null },
-                { project: 'project2', duration: 120 },
-                { project: 'project2', duration: 240 },
+                { project: 'project2', duration: 12 },
+                { project: 'project2', duration: 24 },
             ]);
             return request(app.getHttpServer())
                 .get('/projects')
                 .expect(200)
                 .expect([
-                    { project: 'project0', total_time: 3 },
-                    { project: 'project1', total_time: 3 },
-                    { project: 'project2', total_time: 6 }
+                    { project: 'project0', total_time: 18 },
+                    { project: 'project1', total_time: 18 },
+                    { project: 'project2', total_time: 36 }
                 ])
         });
     });
@@ -57,9 +57,9 @@ describe('AppController (e2e)', () => {
 
         it('should return correct total time and timeslots for project', async () => {
             await repository.save([
-                { project: 'project0', duration: 60 },
-                { project: 'project0', duration: 120 },
-                { project: 'project0', duration: 180 },
+                { project: 'project0', duration: 6 },
+                { project: 'project0', duration: 12 },
+                { project: 'project0', duration: 18 },
                 { project: 'project0', duration: null },
             ]);
 
@@ -67,7 +67,7 @@ describe('AppController (e2e)', () => {
                 .get('/projects/project0')
                 .expect(200)
 
-            expect(body.total_time).toBe(6)
+            expect(body.total_time).toBe(36)
             expect(body.timeslots).toHaveLength(3)
             body.timeslots.forEach((timeslot:object) => {
                 expect(timeslot).toHaveProperty('duration')
@@ -128,7 +128,7 @@ describe('AppController (e2e)', () => {
                 .post('/projects/test/stop')
                 .expect(201)
 
-            expect(body.duration).toBe(60)
+            expect(body.duration).toBe(1)
             expect(body.project).toBe('test')
         })
 

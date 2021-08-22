@@ -39,8 +39,8 @@ Report the list of projects and total time in minutes for every project
 Sample json response:
 ```json
 [
- {"project": "projectName1", total_time: 10},
- {"project": "projectName2", total_time: 14}
+ {"project": "projectName1", "total_time": 10},
+ {"project": "projectName2", "total_time": 14}
 ]
 ```
 
