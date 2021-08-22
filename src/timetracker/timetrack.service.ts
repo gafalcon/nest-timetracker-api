@@ -43,7 +43,7 @@ export class TimeTrackService {
     }
 
     async stopTimeSlot(startedTimeSlot: TimeSlot) {
-        startedTimeSlot.duration = (Date.now() - startedTimeSlot.time_start.getTime())/1000
+        startedTimeSlot.duration = Math.floor((Date.now() - startedTimeSlot.time_start.getTime())/1000)
         return this.repository.save(startedTimeSlot)
     }
 
